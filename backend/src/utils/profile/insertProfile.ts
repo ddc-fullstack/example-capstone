@@ -1,7 +1,7 @@
 import {connect} from "../database.utils";
 import {Profile} from "../interfaces/Profile";
 
-export async function insertProfile(profile: Profile) {
+export async function insertProfile(profile: Profile) : Promise<string> {
 	try {
 		const mysqlConnection = await connect();
 		const query : string = 'INSERT INTO profile(profileId, profileActivationToken, profileAtHandle, profileAvatarUrl,  profileEmail, profileHash, profilePhone ) VALUES (UUID_TO_BIN(UUID()) , :profileActivationToken, :profileAtHandle, :profileAvatarUrl, :profileEmail, :profileHash, :profilePhone)';
@@ -10,6 +10,7 @@ export async function insertProfile(profile: Profile) {
 		return 'Profile Successfully Created'
 	} catch (e) {
 		console.error(e)
-		return null
+		throw e.message
+
 	}
 }
